@@ -1,10 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from app.components.main import main
-from config import basedir
-from flask import render_template, send_from_directory, request
+from flask import render_template
 
+from app.components.main import main
 
 @main.route('/')
 def home():
+    return render_template('home.html')
+
+@main.route('/app/new')
+def home():
+    print
     return render_template('home.html')
