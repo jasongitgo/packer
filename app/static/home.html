@@ -16,7 +16,7 @@
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
-<body ng-app="scotchApp" ng-controller="mainController">
+<body ng-app="routeApp">
 
 <!-- HEADER AND NAVBAR -->
 <header>
@@ -36,8 +36,8 @@
 </header>
 <!-- MAIN CONTENT AND INJECTED VIEWS -->
 <div id="main">
-    fsfsfs: {{ message }}
-    {{abc}}
+    <div ui-view="main"></div>
+    <div ui-view="apps_list"></div>
     <!-- angular templating -->
     <!-- this is where content will be injected -->
 
@@ -47,13 +47,8 @@
 <footer class="text-center">
     View the tutorial on <a href="http://scotch.io/tutorials/angular-routing-and-templating-tutorial">Scotch.io</a>
 </footer>
-<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
-<script>
-    var app = angular.module('scotchApp', []);
-    app.controller('mainController', function ($scope, $http) {
-        $scope.message = 'Everyone come and see how good I look!';
-        $scope.abc = "jason";
-    });
-</script>
+<script src="static/js/angular.min.js"></script>
+<script src="static/js/angular-ui-router.min.js"></script>
+<script src="static/js/home.js"></script>
 </body>
 </html>

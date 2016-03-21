@@ -1,0 +1,31 @@
+<div class="jumbotron text-center" ng-controller="app_createCtl">
+    <form class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-model="app.name" id="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="desc" class="col-sm-2 control-label">Desc</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" ng-model="app.desc" id="desc"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Remember me
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="create()">Sign in</button>
+                </div>
+            </div>
+
+    </form>
+</div>
