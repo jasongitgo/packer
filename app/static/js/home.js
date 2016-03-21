@@ -22,6 +22,11 @@ var routeApp = angular.module('routeApp', ['ui.router'])
                 url: '/create_app',
                 templateUrl: 'static/temp/app_create.html',
                 controller: 'app_createCtl'
+            })
+            .state('app_detail', {
+                url: '/app_detail/:app_id',
+                templateUrl: 'static/temp/app_detail.html',
+                controller: 'app_detailCtl'
             });
 
         // catch all route
@@ -45,6 +50,12 @@ var routeApp = angular.module('routeApp', ['ui.router'])
         };
     })
     .controller('apps_list', function ($scope, $http) {
+        $http.get("/apps/list")
+            .success(function (response) {
+                $scope.apps = response.apps;
+            });
+    })
+    .controller('app_detailCtl', function ($scope, $http) {
         $http.get("/apps/list")
             .success(function (response) {
                 $scope.apps = response.apps;

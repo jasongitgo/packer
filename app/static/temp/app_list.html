@@ -1,9 +1,10 @@
 
+
 <ul>
-    <li ng-repeat="id in {{apps}}">
+    <li ng-repeat="app in apps">
         <div class="jumbotron text-center">
-            <h1>app.name</h1>
-            <p>app.desc</p>
+            <a href="#app_detail/{app.id}">{{ app.name }}</a>
+            <p>{{ app.desc }}</p>
         </div>
     </li>
 </ul>

@@ -16,6 +16,5 @@ def new_app():
 
 @main.route('/apps/list', methods=['GET'])
 def list_app():
-    apk = App.query.all()
-    print jsonify(apk)
-    return jsonify({'apps': apk})
+    apks = App.query.all()
+    return jsonify(apps=[apk.serialize() for apk in apks])
