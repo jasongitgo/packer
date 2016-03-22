@@ -18,3 +18,9 @@ def new_app():
 def list_app():
     apks = App.query.all()
     return jsonify(apps=[apk.serialize() for apk in apks])
+
+
+@main.route('/apps/select', methods=['GET', 'POST'])
+def select_app():
+    apk = App.query.filter(App.id == request.args['appId']).first()
+    return jsonify(app=apk.serialize())
