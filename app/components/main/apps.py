@@ -8,9 +8,16 @@ from app.components.main import main
 
 @main.route('/apps/new', methods=['GET', 'POST'])
 def new_app():
-    apk = App(name=request.json['name'], desc=request.json['desc'])
-    db.session.add(apk)
-    db.session.commit()
+    id = request.json['id']
+    if id:
+        apk = App.query.filter(App.id == id).one()
+        apk.name = request.json['name']
+        apk.desc = request.json['desc']
+        db.session.commit()
+    else:
+        apk = App(name=request.json['name'], desc=request.json['desc'])
+        db.session.add(apk)
+        db.session.commit()
     return 'success'
 
 
