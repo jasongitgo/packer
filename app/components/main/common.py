@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import render_template, request, jsonify
+from sqlalchemy import and_
 
 from app.models import App, db, Moudle, CmdTmplate, Cmd, Config
 from app.components.main import main
@@ -10,7 +11,7 @@ map = {'app': App, 'moudle': Moudle, 'config': Config, 'cmd': Cmd, 'cmdtemplate'
 
 @main.route('/common/new', methods=['POST'])
 def new_entity():
-    key = request.json['type']
+    key = request.json['_type']
 
     if request.json['entity'].has_key('id'):
         id = request.json['entity']['id']
@@ -30,18 +31,19 @@ def new_entity():
 @main.route('/common/list', methods=['GET'])
 def list_entities():
     args = request.args
-    key = args['type']
+    key = args['_type']
     query = map[key].query
+    condions = []
     for k, v in args.items():
-        if k != 'type':
-            query.filter(map[key].__dict__[k] == v)
-    entities = query.all()
+        if k != '_type':
+            condions.append(map[key].__dict__[k] == v)
+    entities = query.filter(and_(*condions)).all()
     return jsonify(entities=[entity.serialize() for entity in entities])
 
 
 @main.route('/common/select', methods=['GET'])
 def select_entity():
-    key = request.args['type']
+    key = request.args['_type']
 
     apk = map[key].query.filter(map[key].id == request.args['id']).first()
     return jsonify(entity=apk.serialize())
@@ -49,7 +51,7 @@ def select_entity():
 
 @main.route('/common/delete', methods=['GET'])
 def delete_entity():
-    key = request.args['type']
+    key = request.args['_type']
 
     map[key].query.filter(map[key].id == request.args['id']).delete()
     return 'success'

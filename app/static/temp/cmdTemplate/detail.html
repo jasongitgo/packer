@@ -1,0 +1,18 @@
+
+<div>
+    name : {{ template.name }}<br>
+    <br>
+    <button type="submit" class="btn btn-default" ng-click="change_template()">change template</button>
+    <button type="submit" class="btn btn-default" ng-click="create_cmd()">create cmd</button>
+    <div>
+        <span>cmds</span>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="cmd in cmds">
+                <a href="#cmd_create/?id={{ cmd.id }}&templateId={{ cmd.templateId }}">{{ cmd.name }}</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+

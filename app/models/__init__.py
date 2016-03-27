@@ -112,5 +112,61 @@ class Cmd(db.Model):
 
     @staticmethod
     def re_serialize(d):
-        return Cmd(name=d['name'], content=d['isDefault'], index=d['index'], templateId=d['templateId'],
+        return Cmd(name=d['name'], content=d['content'], index=d['index'], templateId=d['templateId'],
                    depends=d['depends'])
+
+
+class Task(db.Model):
+    __tablename__ = "task"
+    __table_args__ = {"useexisting": True}
+    id = db.Column(db.Integer, primary_key=True)
+    createTime = db.Column('create_time', db.DATETIME)
+    content = db.Column('content', db.String)
+    appId = db.Column('app_id', db.String(20))
+    status = db.Column('status', db.String)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'createTime': self.createTime,
+            'content': self.content,
+            'appId': self.appId,
+            'status': self.status
+        }
+
+    @staticmethod
+    def re_serialize(d):
+        return Task(createTime=d['createTime'], content=d['content'], appId=d['appId'], status=d['status'])
+
+
+class Step(db.Model):
+    __tablename__ = "step"
+    __table_args__ = {"useexisting": True}
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column('name', db.String)
+    content = db.Column('content', db.String)
+    log = db.Column('log', db.String)
+    taskId = db.Column('task_id', db.String(20))
+    status = db.Column('status', db.String)
+    index = db.Column('index', db.INT)
+    relateId = db.Column('relate', db.String)
+    type = db.Column('type', db.String)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'log': self.log,
+            'content': self.content,
+            'taskId': self.taskId,
+            'status': self.status,
+            'index': self.index,
+            'relateId': self.relateId,
+            'type': self.type
+        }
+
+    @staticmethod
+    def re_serialize(d):
+        return Step(log=d['log'], content=d['content'], taskId=d['taskId'], status=d['status']
+                    , index=d['index']
+                    , relateId=d['relateId']
+                    , type=d['type'])

@@ -1,0 +1,25 @@
+<div>
+    name : {{ app.name }}<br>
+    desc : {{ app.desc }}<br>
+    <div>
+        chose config: <select ng-model="config" ng-options="c.name for c in configs">
+        </select>
+        <br>
+        chose cmd templates: <select ng-model="template" ng-options="t.name for t in templates">
+        </select>
+        <br>
+        chose moudles to pack<br>
+        <span>moudles</span>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="moudle in moudles">
+                {{ moudle.name }}
+                <input type="checkbox" ng-model="moudle.pack"> if pack this moudle
+                <div>
+                    chose cmd templates: <select ng-model="moudle.template" ng-options="t.name for t in moudle.templates">
+                    </select>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-primary" ng-click="create()">pack</button>
+</div>
