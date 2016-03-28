@@ -7,8 +7,8 @@ class App(db.Model):
     __tablename__ = "app"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
-    desc = db.Column('desc', db.String)
+    name = db.Column('name', db.String(50))
+    desc = db.Column('desc', db.String(50))
     moudles = db.relationship('Moudle')
 
     def serialize(self):
@@ -27,9 +27,9 @@ class Moudle(db.Model):
     __tablename__ = "moudle"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
-    desc = db.Column('desc', db.String)
-    appId = db.Column(db.String(20), db.ForeignKey('app.id'))
+    name = db.Column('name', db.String(50))
+    desc = db.Column('desc', db.String(50))
+    appId = db.Column(db.Integer, db.ForeignKey('app.id'))
 
     def serialize(self):
         return {
@@ -48,10 +48,10 @@ class Config(db.Model):
     __tablename__ = "config"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
-    content = db.Column('content', db.String)
-    type = db.Column('type', db.String)
-    relateId = db.Column('relate_id', db.String(20))
+    name = db.Column('name', db.String(50))
+    content = db.Column('content', db.String(50))
+    type = db.Column('type', db.String(50))
+    relateId = db.Column('relate_id', db.String(50))
 
     def serialize(self):
         return {
@@ -71,10 +71,10 @@ class CmdTmplate(db.Model):
     __tablename__ = "cmd_template"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
+    name = db.Column('name', db.String(50))
     isDefault = db.Column('is_default', db.Boolean)
-    type = db.Column('type', db.String)
-    relateId = db.Column('relate_id', db.String(20))
+    type = db.Column('type', db.String(50))
+    relateId = db.Column('relate_id', db.String(50))
 
     def serialize(self):
         return {
@@ -94,11 +94,11 @@ class Cmd(db.Model):
     __tablename__ = "cmd"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
-    content = db.Column('content', db.String)
-    templateId = db.Column('template_id', db.String(20))
-    index = db.Column('index', db.INT)
-    depends = db.Column('depends', db.String)
+    name = db.Column('name', db.String(50))
+    content = db.Column('content', db.String(50))
+    templateId = db.Column('template_id', db.String(50))
+    index = db.Column('index', db.Integer)
+    depends = db.Column('depends', db.String(50))
 
     def serialize(self):
         return {
@@ -121,9 +121,9 @@ class Task(db.Model):
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
     createTime = db.Column('create_time', db.DATETIME)
-    content = db.Column('content', db.String)
-    appId = db.Column('app_id', db.String(20))
-    status = db.Column('status', db.String)
+    content = db.Column('content', db.String(50))
+    appId = db.Column('app_id', db.String(50))
+    status = db.Column('status', db.String(50))
 
     def serialize(self):
         return {
@@ -143,14 +143,14 @@ class Step(db.Model):
     __tablename__ = "step"
     __table_args__ = {"useexisting": True}
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column('name', db.String)
-    content = db.Column('content', db.String)
-    log = db.Column('log', db.String)
-    taskId = db.Column('task_id', db.String(20))
-    status = db.Column('status', db.String)
+    name = db.Column('name', db.String(50))
+    content = db.Column('content', db.String(50))
+    log = db.Column('log', db.String(50))
+    taskId = db.Column('task_id', db.String(50))
+    status = db.Column('status', db.String(50))
     index = db.Column('index', db.INT)
-    relateId = db.Column('relate', db.String)
-    type = db.Column('type', db.String)
+    relateId = db.Column('relate', db.String(50))
+    type = db.Column('type', db.String(50))
 
     def serialize(self):
         return {

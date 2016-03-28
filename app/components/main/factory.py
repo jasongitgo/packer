@@ -10,7 +10,7 @@ import worker
 process_tasks = []
 
 
-def check_task(db):
+def check_task():
     while True:
 
         tasks = db.session.query(Task).filter(Task.status == 'new').all()
@@ -47,5 +47,5 @@ def process_task(task):
 
 
 def start():
-    checker = threading.Thread(target=check_task, args=(db,))
+    checker = threading.Thread(target=check_task)
     checker.start()
