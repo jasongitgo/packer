@@ -1,0 +1,13 @@
+<div>
+    <div>
+        <span>moudles</span>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="step in steps">
+                index: {{ step.index }}
+                <a href="#moudle_detail/{{ moudle.id }}">{{ step.name }}</a>
+                status: {{ step.status }}
+                <p>{{ step.log }}</p>
+            </li>
+        </ul>
+    </div>
+</div>

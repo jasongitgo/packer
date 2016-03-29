@@ -1,0 +1,10 @@
+<div>
+    <span>tasks</span>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="task in tasks">
+            <a href="#step_list/{{ task.id }}">{{ task.createTime }}</a>
+            <p>{{ task.status }}</p>
+            app:{{ task.appName }}
+        </li>
+    </ul>
+</div>

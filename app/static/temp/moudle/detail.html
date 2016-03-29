@@ -1,0 +1,27 @@
+<div>
+    name : {{ moudle.name }}<br>
+    desc : {{ moudle.desc }}<br>
+    <button type="submit" class="btn btn-default" ng-click="change_app()">change moudle</button>
+    <button type="submit" class="btn btn-default" ng-click="create_config()">create config</button>
+    <button type="submit" class="btn btn-default" ng-click="create_cmd_template()">create cmd template</button>
+
+    <div>
+        <span>configs</span>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="config in configs">
+                <a href="#config_detail/{{ config.id }}">{{ config.name }}</a>
+                <p>{{ moudle.desc }}</p>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <span>cmd templates</span>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="cmdT in cmdTemplates">
+                <a href="#cmd_template_detail/{{ cmdT.id }}">{{ cmdT.name }}</a>
+                <p>{{ moudle.desc }}</p>
+            </li>
+        </ul>
+    </div>
+
+</div>
