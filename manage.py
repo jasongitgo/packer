@@ -7,11 +7,15 @@ from flask.ext.bootstrap import Bootstrap
 from app import create_app, db
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
+from app.components.main import factory
 
 app = create_app(os.getenv('FLASKd_CONFIG') or 'default')
 bootstrap = Bootstrap(app)
 manager = Manager(app)
 migrate = Migrate(app, db)
+ctx = app.app_context()
+ctx.push()
+factory.start(app)
 
 
 def make_shell_context():

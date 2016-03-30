@@ -25,7 +25,7 @@ def create_app(config_name):
     db.init_app(app)
 
     from .components.main import main as main_blueprint
-    from app.components.main import factory
+
     app.register_blueprint(main_blueprint)
-    factory.start()
+
     return app
