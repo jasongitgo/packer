@@ -161,9 +161,9 @@ var routeApp = angular.module('routeApp', ['ui.router'])
         $scope.moudle.appId = $stateParams.appId;
         $scope.create = function () {
 
-            $http.post("/common/new", {type: 'moudle', entity: $scope.moudle})
+            $http.post("/common/new", {_type: 'moudle', entity: $scope.moudle})
                 .success(function (response) {
-                    $state.go('app_detail', {appId: $stateParams.relateId});
+                    $state.go('app_detail', {appId: $stateParams.appId});
                 });
         };
     })
@@ -238,8 +238,8 @@ var routeApp = angular.module('routeApp', ['ui.router'])
 
             $http.post("/common/new", {_type: 'cmdtemplate', entity: $scope.template})
                 .success(function (response) {
-                    if ($scope.template.id) {
-                        $state.go('cmd_template_detail', {id: $stateParams.id});
+                    if ($stateParams.type == 'moudle') {
+                        $state.go('moudle_detail', {id: $stateParams.relateId});
                     } else
                         $state.go('app_detail', {appId: $stateParams.relateId});
                 });

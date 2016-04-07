@@ -23,7 +23,7 @@ def task_app():
     db.session.add(task)
     i = 0
     for moudle in moudles:
-        if moudle['pack']:
+        if moudle.has_key('pack') and moudle['pack']:
             cmds = Cmd.query.filter(Cmd.templateId == moudle['template']['id']).all()
             # moudle_config = load_config(moudle['config']).content
             for cmd in cmds:

@@ -1,13 +1,13 @@
 from subprocess import Popen, STDOUT, PIPE
 
-log = {}
+logs = {}
 
 
 def write_log(log, stepId):
-    if log.has_key(stepId):
-        log[stepId] += log
+    if logs.has_key(stepId):
+        logs[stepId] += log
     else:
-        log[stepId] = log
+        logs[stepId] = log
 
 
 def process(cmd, stepId):
