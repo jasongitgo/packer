@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import time
 
 from flask.ext.bootstrap import Bootstrap
 
@@ -30,18 +29,5 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
-    try:
-        pid = os.fork()
-
-        if pid == 0:
-            # logger.info( "this is child process.")
-            time.sleep(3)
-            app.run(host='0.0.0.0', port=8088)
-        else:
-            # logger.info( "this is parent process.")
-            pass
-
-    except OSError, e:
-        pass
-
+    app.run(host='0.0.0.0', port=8088)
     #manager.run()
