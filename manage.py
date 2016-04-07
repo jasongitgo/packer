@@ -15,6 +15,8 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 ctx = app.app_context()
 ctx.push()
+from app.components.main import main as main_blueprint
+app.register_blueprint(main_blueprint)
 from app.components.main import factory
 factory.start(app)
 
