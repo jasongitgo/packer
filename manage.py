@@ -7,7 +7,7 @@ from flask.ext.bootstrap import Bootstrap
 from app import create_app, db
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
-from app.components.main import factory
+
 
 app = create_app(os.getenv('FLASKd_CONFIG') or 'default')
 bootstrap = Bootstrap(app)
@@ -15,6 +15,7 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 ctx = app.app_context()
 ctx.push()
+from app.components.main import factory
 factory.start(app)
 
 
@@ -26,5 +27,5 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=8088)
-    manager.run()
+    app.run(host='0.0.0.0', port=8088)
+    #manager.run()
