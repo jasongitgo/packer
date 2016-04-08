@@ -19,7 +19,7 @@ def task_app():
     template = request.json['template']
     moudles = request.json['moudles']
 
-    task = Task(createTime=datetime.utcnow(), appId=appId, status='new')
+    task = Task(createTime=datetime.now(), appId=appId, status='new')
     db.session.add(task)
     i = 0
     for moudle in moudles:
@@ -49,9 +49,13 @@ def load_config(id):
     return Config.query.filter(Config.id == id).one()
 
 
-def reset_cmd(cmd, config):
+def reset_cmd(cmd, config,prefix=''):
     for key, value in config.items():
-        cmd = cmd.replace(r'${%s}' % key, value)
+        if type(value) == dict:
+            cmd = reset_cmd(cmd,value,key)
+            continue
+        match = r'${%s}' % ((prefix+'.' if prefix else '') + key)
+        cmd = cmd.replace(match, value)
     return cmd
 
 
@@ -95,7 +99,7 @@ def load_templates(relate_id, t):
 @main.route('/task/list', methods=['GET', 'POST'])
 def list_task():
     apk = db.session.query(Task.id, Task.status, Task.createTime, App.id, App.name).filter(
-        App.id == Task.appId).order_by(Task.createTime).all()
+        App.id == Task.appId).order_by(Task.createTime.desc()).all()
     results = []
     for a in apk:
         result = {}
