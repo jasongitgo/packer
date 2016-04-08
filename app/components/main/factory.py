@@ -3,6 +3,8 @@
 import threading
 
 import time
+import traceback
+
 from app.models import db, Task, Step
 import worker
 from app.logger import logger
@@ -51,7 +53,7 @@ def process_task(task, app):
             del process_tasks[task.id]
         except Exception,e:
             logger.error('error while process task %s' % task.id)
-            logger.error(e)
+            logger.error(traceback.format_exc())
 
 
 def start(app):
