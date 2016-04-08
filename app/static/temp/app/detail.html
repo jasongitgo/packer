@@ -19,7 +19,7 @@
         <span>configs</span>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="config in configs">
-                <a href="#config_detail/{{ config.id }}">{{ config.name }}</a>
+                <a href="#config_detail/?id={{ config.id }}&relateId={{ config.relateId }}&type={{ config.type }}">{{ config.name }}</a>
                 <p>{{ moudle.desc }}</p>
             </li>
         </ul>

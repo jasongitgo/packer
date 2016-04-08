@@ -43,6 +43,11 @@ var routeApp = angular.module('routeApp', ['ui.router'])
                 templateUrl: 'static/temp/config/create.html',
                 controller: 'config_createCtl'
             })
+            .state('config_detail', {
+                url: '/config_detail/?id&relateId&type',
+                templateUrl: 'static/temp/config/detail.html',
+                controller: 'config_detailCtl'
+            })
             .state('cmd_template_create', {
                 url: '/cmd_template_create/?relateId&type&id',
                 templateUrl: 'static/temp/cmdTemplate/create.html',
@@ -208,6 +213,31 @@ var routeApp = angular.module('routeApp', ['ui.router'])
             .success(function (response) {
                 $scope.config.content = response.config;
             });
+        $scope.create = function () {
+
+            $http.post("/common/new", {_type: 'config', entity: $scope.config})
+                .success(function (response) {
+                    if ($stateParams.type == 'app')
+                        $state.go('app_detail', {appId: $stateParams.relateId});
+                    else
+                        $state.go('moudle_detail', {id: $stateParams.relateId});
+                });
+        };
+    })
+    .controller('config_detailCtl', function ($scope, $http, $stateParams, $state) {
+        var id = $stateParams.id;
+        console.log($stateParams);
+        $scope.config={};
+        $scope.config.relateId = $stateParams.relateId;
+        $scope.config.type = $stateParams.type;
+        $http.get("/common/select", {
+                params: {id: id, _type: 'config'}
+            })
+            .success(function (response) {
+                $scope.config = response.entity;
+            });
+
+
         $scope.create = function () {
 
             $http.post("/common/new", {_type: 'config', entity: $scope.config})
