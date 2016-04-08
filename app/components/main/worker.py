@@ -1,9 +1,10 @@
 from subprocess import Popen, STDOUT, PIPE
-
+from app.logger import logger
 logs = {}
 
 
 def write_log(log, stepId):
+    logger.info(log)
     if logs.has_key(stepId):
         logs[stepId] += log
     else:
@@ -11,6 +12,7 @@ def write_log(log, stepId):
 
 
 def process(cmd, stepId):
+    logger.info("cmd:\n"+cmd)
     p = Popen(cmd, stdout=PIPE, shell=True)
 
     while True:
