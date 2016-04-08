@@ -15,7 +15,6 @@ process_tasks = {}
 def check_task(app):
     with app.app_context():
         while True:
-            logger.info('check_task')
             tasks = db.session.query(Task).filter(Task.status == 'new').all()
 
             for task in tasks:
@@ -42,7 +41,7 @@ def process_task(task, app):
                     break
                 else:
                     step.status = 'success'
-                step.log = worker.logs.get(step.id, default='')
+                step.log = worker.logs.get(step.id, '')
                 worker.logs.pop(step.id)
                 db.session.commit()
             if returncode != 0:
