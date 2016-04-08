@@ -20,19 +20,26 @@ def write_logs(loges, stepId):
 
 def process(cmd, stepId):
     logger.info("cmd:\n" + cmd)
-    out_temp = tempfile.SpooledTemporaryFile(bufsize=10 * 1000)
-    fileno = out_temp.fileno()
+    try:
+        out_temp = tempfile.SpooledTemporaryFile(bufsize=10 * 1000)
+        fileno = out_temp.fileno()
 
-    p = Popen(cmd, stdout=fileno, shell=True)
+        p = Popen(cmd, stdout=fileno, shell=True)
 
-    while True:
-        out_temp.seek(0)
-        next_lines = out_temp.readlines()
-        if next_lines:
-            write_logs(next_lines, stepId)
-
-        if Popen.poll(p) != None:
+        while True:
+            out_temp.seek(0)
             next_lines = out_temp.readlines()
-            write_logs(next_lines, stepId)
-            break
+            if next_lines:
+                write_logs(next_lines, stepId)
+
+            if Popen.poll(p) != None:
+                next_lines = out_temp.readlines()
+                write_logs(next_lines, stepId)
+                break
+    except:
+        logger.error(traceback.format_exc())
+    finally:
+        if out_temp:
+            out_temp.close()
+
     return p.returncode
