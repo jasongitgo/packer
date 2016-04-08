@@ -15,7 +15,7 @@ process_tasks = {}
 def check_task(app):
     with app.app_context():
         while True:
-
+            logger.info('check_task')
             tasks = db.session.query(Task).filter(Task.status == 'new').all()
 
             for task in tasks:
@@ -42,7 +42,7 @@ def process_task(task, app):
                     break
                 else:
                     step.status = 'success'
-                step.log = worker.logs.get(step.id,default='')
+                step.log = worker.logs.get(step.id, default='')
                 worker.logs.pop(step.id)
                 db.session.commit()
             if returncode != 0:
@@ -51,7 +51,7 @@ def process_task(task, app):
                 task.status = 'success'
             db.session.commit()
             del process_tasks[task.id]
-        except Exception,e:
+        except Exception, e:
             logger.error('error while process task %s' % task.id)
             logger.error(traceback.format_exc())
 
