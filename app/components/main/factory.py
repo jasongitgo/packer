@@ -42,7 +42,7 @@ def process_task(task, app):
                     break
                 else:
                     step.status = 'success'
-                step.log = worker.logs[step.id]
+                step.log = worker.logs.get(step.id,default='')
                 worker.logs.pop(step.id)
                 db.session.commit()
             if returncode != 0:
