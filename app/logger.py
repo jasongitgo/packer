@@ -3,10 +3,8 @@ import logging.handlers
 
 from bsip import meta
 
-home = meta.agent_home
-if not os.path.exists(home+'/logs/'):
-    os.makedirs(home+'/logs/')
-LOG_FILE = home+'/logs/' + 'agent.log'
+
+LOG_FILE = '/var/log/packer.log'
 
 if not os.path.exists(LOG_FILE):
     f = open(LOG_FILE,'w')
