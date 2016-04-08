@@ -1,9 +1,10 @@
 from subprocess import Popen, STDOUT, PIPE
-
+from app.logger import logger
 log = {}
 
 
 def write_log(log, stepId):
+    logger.info(log)
     if log.has_key(stepId):
         log[stepId] += log
     else:
