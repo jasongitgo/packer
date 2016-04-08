@@ -42,7 +42,8 @@ def process_task(task, app):
                 else:
                     step.status = 'success'
                 step.log = worker.logs.get(step.id, '')
-                worker.logs.pop(step.id)
+                if worker.logs.has_key(step.id):
+                    worker.logs.pop(step.id)
                 db.session.commit()
             if returncode != 0:
                 task.status = 'failed'
