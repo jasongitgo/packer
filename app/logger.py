@@ -1,8 +1,8 @@
 import logging,os
 import logging.handlers
 
-from bsip import meta
-
+if not os.path.exists('/var/log/packer'):
+    os.makedirs('/var/log/packer')
 
 LOG_FILE = '/var/log/packer/packer.log'
 
