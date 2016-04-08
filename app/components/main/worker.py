@@ -21,12 +21,13 @@ def write_logs(loges, stepId):
 def process(cmd, stepId):
     logger.info("cmd:\n" + cmd)
     try:
-        out_temp = tempfile.SpooledTemporaryFile(bufsize=10 * 1000)
+        out_temp = tempfile.SpooledTemporaryFile(bufsize=100 * 1024)
         fileno = out_temp.fileno()
 
         p = Popen(cmd, stdout=fileno, shell=True)
 
         while True:
+            logger.info('-----------')
             out_temp.seek(0)
             next_lines = out_temp.readlines()
             if next_lines:
