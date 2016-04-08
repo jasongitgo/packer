@@ -4,7 +4,7 @@ import logging.handlers
 from bsip import meta
 
 
-LOG_FILE = '/var/log/packer.log'
+LOG_FILE = '/var/log/packer/packer.log'
 
 if not os.path.exists(LOG_FILE):
     f = open(LOG_FILE,'w')
