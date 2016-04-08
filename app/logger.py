@@ -20,6 +20,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 logger.error("this is test")
+print 'this is test'
 
 
 
