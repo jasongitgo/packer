@@ -8,7 +8,7 @@ logs = {}
 
 
 def write_log(log, stepId):
-    logger.info('step:'+stepId+':'+log)
+    logger.info('step:'+str(stepId)+':'+log)
     if logs.has_key(stepId):
         logs[stepId] += log
     else:
