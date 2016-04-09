@@ -57,5 +57,6 @@ def process_task(task, app):
 
 
 def start(app):
+    logger.info("start factory.......")
     checker = threading.Thread(target=check_task, args=(app,))
     checker.start()
