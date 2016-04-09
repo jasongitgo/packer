@@ -20,27 +20,34 @@ def write_logs(loges, stepId):
         write_log(log, stepId)
 
 
-def load_log(out_temp, p):
+def load_log(tmpFile, p,stepId):
+    pos = 0
     while True:
-        out_temp.seek(0)
-        next_lines = out_temp.readlines()
+        read_temp = open(tmpFile,'r')
+        read_temp.seek(pos)
+
+        next_lines = read_temp.readlines()
         if next_lines:
             write_logs(next_lines, stepId)
 
         if Popen.poll(p) != None:
-            next_lines = out_temp.readlines()
+            next_lines = read_temp.readlines()
             write_logs(next_lines, stepId)
+            read_temp.close()
             break
+        pos = read_temp.tell()
+        read_temp.close()
 
 
 def process(cmd, stepId):
     logger.info("cmd:\n" + cmd)
+    out_temp=None
     try:
-        out_temp = tempfile.SpooledTemporaryFile(bufsize=100 * 1024)
+        out_temp = tempfile.NamedTemporaryFile()
+        tmpFile = out_temp.name
         fileno = out_temp.fileno()
-
         p = Popen(cmd, stdout=fileno, shell=True)
-        loads = threading.Thread(target=load_log, args=(out_temp, p))
+        loads = threading.Thread(target=load_log, args=(tmpFile, p,stepId))
         loads.start()
         p.wait()
 
