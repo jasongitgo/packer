@@ -1,0 +1,11 @@
+<div class="jumbotron text-center" ng-controller="param_createCtl">
+    <ul class="list-group">
+        <li ng-repeat="param in params" class="list-group-item">
+            key:<input type="text" value="{{ param.code }}">
+            value:<input type="text" value="{{ param.content }}">
+            <button type="button" class="btn btn-default" ng-click="delete({{ i }})">delete{{ i }}</button>
+        </li>
+    </ul>
+    <button type="button" class="btn btn-default" ng-click="add()">add</button>
+    <button type="button" class="btn btn-default" ng-click="save()">save</button>
+</div>
