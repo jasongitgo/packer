@@ -178,7 +178,8 @@ var routeApp = angular.module('routeApp', ['ui.router'])
 
         };
         $scope.delete = function (i) {
-            $scope.params.splice(i,1);
+            var index = $scope.params.indexOf(i);
+            $scope.params.pop(index,1);
 
         };
         $scope.create = function () {
