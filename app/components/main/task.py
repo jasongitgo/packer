@@ -18,6 +18,7 @@ def task_app():
     appId = request.json['appId']
     template = request.json['template']
     moudles = request.json['moudles']
+    params = request.json['params']
 
     task = Task(createTime=datetime.now(), appId=appId, status='new')
     db.session.add(task)
@@ -29,6 +30,7 @@ def task_app():
             for cmd in cmds:
                 # cmd = reset_cmd(cmd, moudle_config)
                 c = cmd.content
+                c = reset_cmd_params(c, params)
                 c = reset_cmd(c, config)
                 step = Step(name=cmd.name, content=c, taskId=task.id, status='pending', index=i, relateId=moudle['id'],
                             type='moudle')
@@ -37,6 +39,7 @@ def task_app():
     cmds = Cmd.query.filter(Cmd.templateId == template['id']).all()
     for cmd in cmds:
         c = cmd.content
+        c = reset_cmd_params(c, params)
         c = reset_cmd(c, config)
         i += 1
         step = Step(name=cmd.name, content=c, taskId=task.id, status='pending', index=i, relateId=appId, type='app')
@@ -49,13 +52,21 @@ def load_config(id):
     return Config.query.filter(Config.id == id).one()
 
 
-def reset_cmd(cmd, config,prefix=''):
+def reset_cmd(cmd, config, prefix=''):
     for key, value in config.items():
         if type(value) == dict:
-            cmd = reset_cmd(cmd,value,key)
+            cmd = reset_cmd(cmd, value, key)
             continue
-        match = r'${%s}' % ((prefix+'.' if prefix else '') + key)
+        match = r'${%s}' % ((prefix + '.' if prefix else '') + key)
         cmd = cmd.replace(match, value)
+    return cmd
+
+
+def reset_cmd_params(cmd, params):
+    for param in params:
+        match = r'${%s}' % param['code']
+
+        cmd = cmd.replace(match, param['content'])
     return cmd
 
 

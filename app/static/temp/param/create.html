@@ -1,8 +1,8 @@
-<div class="jumbotron text-center" ng-controller="param_createCtl">
+<div class="jumbotron text-center">
     <ul class="list-group">
         <li ng-repeat="param in params" class="list-group-item">
-            key:<input type="text" value="{{ param.code }}">
-            value:<input type="text" value="{{ param.content }}">
+            key:<input type="text" ng-model="param.code" >
+            value:<input type="text" ng-model="param.content">
             <button type="button" class="btn btn-default" ng-click="delete(param)">delete</button>
         </li>
     </ul>

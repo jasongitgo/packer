@@ -4,4 +4,4 @@
 from flask import Blueprint
 
 main = Blueprint('main', __name__)
-from . import common, Configs, views, task,factory,worker
+from . import common, Configs, views, task,factory,worker,param

@@ -160,7 +160,7 @@ var routeApp = angular.module('routeApp', ['ui.router'])
             $state.go('config_create', {relateId: $scope.appId, type: 'app'});
         };
         $scope.create_param = function () {
-            $state.go('param_create', {relateId: $scope.appId});
+            $state.go('param_create', {appId: $scope.appId});
         };
         $scope.create_cmd_template = function () {
             $state.go('cmd_template_create', {relateId: $scope.appId, type: 'app'});
@@ -173,18 +173,23 @@ var routeApp = angular.module('routeApp', ['ui.router'])
         $scope.params = [{'code':'','content':''}];
         $scope.appId = $stateParams.appId;
 
+        $http.get("/param/list", {
+                params: {appId: $scope.appId}
+            })
+            .success(function (response) {
+                $scope.params = response.params;
+            });
         $scope.add = function () {
             $scope.params.push({'code':'','content':''})
 
         };
         $scope.delete = function (i) {
             var index = $scope.params.indexOf(i);
-            $scope.params.pop(index,1);
+            $scope.params.splice(index,1);
 
         };
-        $scope.create = function () {
-
-            $http.post("/common/new", {_type: 'moudle', entity: $scope.moudle})
+        $scope.save = function () {
+            $http.post("/param/new", {appId: $stateParams.appId, params: $scope.params})
                 .success(function (response) {
                     $state.go('app_detail', {appId: $stateParams.appId});
                 });
@@ -356,6 +361,12 @@ routeApp
     .controller('pack_createCtl', function ($scope, $state, $stateParams, $http) {
         var appId = $stateParams.appId;
 
+        $http.get("/param/list", {
+                params: {appId: appId}
+            })
+            .success(function (response) {
+                $scope.params = response.params;
+            });
         $http.get("pack/loadInfos", {
                 params: {appId: appId}
             })
@@ -379,7 +390,8 @@ routeApp
 
 
         $scope.create = function () {
-            var data = {config: $scope.config, template: $scope.template, moudles: $scope.moudles, appId: appId}
+            var data = {config: $scope.config, template: $scope.template, moudles: $scope.moudles, appId: appId
+            ,params:$scope.params};
 
             $http.post("/task/new", data)
                 .success(function (response) {

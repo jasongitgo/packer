@@ -2,6 +2,9 @@ import tempfile
 import threading
 import traceback
 from subprocess import Popen, STDOUT, PIPE
+
+import time
+
 from app.logger import logger
 
 logs = {}
@@ -51,6 +54,9 @@ def process(cmd, stepId):
         loads.start()
         p.wait()
 
+        while loads.is_alive:
+            time.sleep(2)
+            continue
     except Exception, e:
         logger.error(traceback.format_exc())
     finally:

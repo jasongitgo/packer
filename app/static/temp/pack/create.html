@@ -2,6 +2,11 @@
     name : {{ app.name }}<br>
     desc : {{ app.desc }}<br>
     <div>
+        <ul class="list-group">
+            <li ng-repeat="param in params" class="list-group-item">
+                {{ param.code }}:<input type="text" ng-model="param.content">
+            </li>
+        </ul>
         chose config: <select ng-model="config" ng-options="c.name for c in configs">
         </select>
         <br>

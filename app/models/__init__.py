@@ -182,4 +182,11 @@ class Param(db.Model):
     type = db.Column('type', db.String(50))
     appId = db.Column('app_id', db.String(50))
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'code': self.code,
+            'content': self.content,
+            'appId': self.appId
+        }
 
