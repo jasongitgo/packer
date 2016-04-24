@@ -161,7 +161,8 @@ class Step(db.Model):
             'status': self.status,
             'index': self.index,
             'relateId': self.relateId,
-            'type': self.type
+            'type': self.type,
+            'name':self.name
         }
 
     @staticmethod
