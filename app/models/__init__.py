@@ -171,3 +171,15 @@ class Step(db.Model):
                     , index=d['index']
                     , relateId=d['relateId']
                     , type=d['type'])
+
+class Param(db.Model):
+    __tablename__ = "param"
+    __table_args__ = {"useexisting": True}
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column('name', db.String(500))
+    code = db.Column('code', db.String(500))
+    content = db.Column('content', db.String(500))
+    type = db.Column('type', db.String(50))
+    appId = db.Column('app_id', db.String(50))
+
+

@@ -38,6 +38,11 @@ var routeApp = angular.module('routeApp', ['ui.router'])
                 templateUrl: 'static/temp/moudle/detail.html',
                 controller: 'moudle_detailCtl'
             })
+            .state('param_create', {
+                url: '/param_create/?appId',
+                templateUrl: 'static/temp/param/create.html',
+                controller: 'param_createCtl'
+            })
             .state('config_create', {
                 url: '/config_create/?relateId&type',
                 templateUrl: 'static/temp/config/create.html',
@@ -154,11 +159,35 @@ var routeApp = angular.module('routeApp', ['ui.router'])
         $scope.create_config = function () {
             $state.go('config_create', {relateId: $scope.appId, type: 'app'});
         };
+        $scope.create_param = function () {
+            $state.go('param_create', {relateId: $scope.appId});
+        };
         $scope.create_cmd_template = function () {
             $state.go('cmd_template_create', {relateId: $scope.appId, type: 'app'});
         };
         $scope.pack = function () {
             $state.go('pack_create', {appId: $scope.appId});
+        };
+    })
+    .controller('param_createCtl', function ($scope, $http, $stateParams, $state) {
+        $scope.params = [{'code':'','content':''}];
+        $scope.appId = $stateParams.appId;
+
+        $scope.add = function () {
+            $scope.params.push({'code':'','content':''})
+
+        };
+        $scope.delete = function (i) {
+            var index = $scope.params.indexOf(i);
+            $scope.params.pop(index,1);
+
+        };
+        $scope.create = function () {
+
+            $http.post("/common/new", {_type: 'moudle', entity: $scope.moudle})
+                .success(function (response) {
+                    $state.go('app_detail', {appId: $stateParams.appId});
+                });
         };
     })
     .controller('moudle_createCtl', function ($scope, $http, $stateParams, $state) {
