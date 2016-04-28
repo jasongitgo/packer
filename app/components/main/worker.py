@@ -53,7 +53,10 @@ def process_python(content,stepId):
     tempfile='/tmp/%s.python' % stepId
 
     f = open(tempfile,'w')
-    f.writelines(content)
+    for line in content.split('\n'):
+        if line.startswith('#!') and line.__contains__('python'):
+            continue
+        f.writeline(content)
     f.close()
 
     process('python %s' % tempfile,stepId)
