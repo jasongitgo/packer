@@ -40,9 +40,26 @@ def load_log(tmpFile, p,stepId):
             break
         pos = read_temp.tell()
         read_temp.close()
-
-
 def process(cmd, stepId):
+    for line in cmd.split('\n'):
+        if line.startswith('#!') and line.__contains__('python'):
+            process_python(cmd,stepId)
+        else:
+            process_cmd(cmd,stepId)
+        break
+
+
+def process_python(content,stepId):
+    tempfile='/tmp/%s.python' % stepId
+
+    f = open(tempfile,'w')
+    f.writelines(content)
+    f.close()
+
+    process('python %s' % tempfile,stepId)
+
+
+def process_cmd(cmd, stepId):
     logger.info("cmd:\n" + cmd)
     out_temp=None
     try:
