@@ -18,7 +18,7 @@ def task_app():
     appId = request.json['appId']
     template = request.json['template']
     moudles = request.json['moudles']
-    params = request.json['params']
+    params = request.values.get('params')
 
     task = Task(createTime=datetime.now(), appId=appId, status='new')
     db.session.add(task)
@@ -63,6 +63,8 @@ def reset_cmd(cmd, config, prefix=''):
 
 
 def reset_cmd_params(cmd, params):
+    if not params:
+        return cmd
     for param in params:
         match = r'${%s}' % param['code']
 
