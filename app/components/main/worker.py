@@ -41,7 +41,7 @@ def load_log(tmpFile, p, stepId):
             break
         pos = read_temp.tell()
         read_temp.close()
-
+        time.sleep(2)
 
 def process(cmd, stepId):
     tempfile = '/tmp/%s.python' % stepId
