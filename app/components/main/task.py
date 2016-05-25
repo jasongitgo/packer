@@ -10,6 +10,7 @@ from app import App, db
 from app.components.main import main
 
 from app.models import Task, Cmd, Config, Step, CmdTmplate, Moudle
+import factory
 
 
 @main.route('/task/new', methods=['GET', 'POST'])
@@ -45,6 +46,7 @@ def task_app():
         step = Step(name=cmd.name, content=c, taskId=task.id, status='pending', index=i, relateId=appId, type='app')
         db.session.add(step)
     db.session.commit()
+    factory.process_task.delay(task.id)
     return jsonify(taskId=task.id)
 
 
