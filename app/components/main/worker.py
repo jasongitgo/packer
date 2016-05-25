@@ -27,38 +27,45 @@ def write_logs(loges, stepId):
 def load_log(tmpFile, p, stepId):
     pos = 0
     while True:
-        read_temp = open(tmpFile, 'r')
-        read_temp.seek(pos)
+        try:
+            read_temp = open(tmpFile, 'r')
+            read_temp.seek(pos)
 
-        next_lines = read_temp.readlines()
-        if next_lines:
-            write_logs(next_lines, stepId)
+            if Popen.poll(p) != None:
+                next_lines = read_temp.readlines()
+                write_logs(next_lines, stepId)
+                read_temp.close()
+                logger.info("break")
+                break
 
-        if Popen.poll(p) != None:
             next_lines = read_temp.readlines()
-            write_logs(next_lines, stepId)
+            if next_lines:
+                write_logs(next_lines, stepId)
+
+            pos = read_temp.tell()
             read_temp.close()
-            break
-        pos = read_temp.tell()
-        read_temp.close()
+            time.sleep(2)
+        except Exception, e:
+            logger.error(traceback.format_exc())
 
 
 def process(cmd, stepId):
-    tempfile = '/tmp/%s.python' % stepId
+    tempfile = '/tmp/%s.step' % stepId
 
     f = open(tempfile, 'w')
 
     f.write(cmd)
     f.close()
 
-    process_cmd(get_tanslator(cmd) + ' ' + tempfile, stepId)
-    #os.remove(f)
+    code = process_cmd(get_tanslator(cmd) + ' ' + tempfile, stepId)
+    os.remove(tempfile)
+    return code
 
 
 def get_tanslator(cmd):
     for line in cmd.split('\n'):
         if line.startswith('#!'):
-            logger.error('translator:'+line[line.find('#!') + 2:])
+            # logger.error('translator:' + line[line.find('#!') + 2:])
             return line[line.find('#!') + 2:]
     return 'sh'
 
@@ -79,6 +86,7 @@ def process_python(content, stepId):
 def process_cmd(cmd, stepId):
     logger.info("cmd:\n" + cmd)
     out_temp = None
+    returncode = 2
     try:
         out_temp = tempfile.NamedTemporaryFile()
         tmpFile = out_temp.name
@@ -88,13 +96,16 @@ def process_cmd(cmd, stepId):
         loads.start()
         p.wait()
 
-        while loads.is_alive:
+        while loads.isAlive():
+            # logger.info("current thread is still alive")
             time.sleep(2)
             continue
+        # logger.info("returncode:%s" % p.returncode)
+        returncode = p.returncode
     except Exception, e:
         logger.error(traceback.format_exc())
     finally:
         if out_temp:
             out_temp.close()
 
-    return p.returncode
+    return returncode
