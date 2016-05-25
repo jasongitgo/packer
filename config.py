@@ -25,9 +25,10 @@ class DevelopmentConfig(Config):
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    # SQLALCHEMY_DATABASE_URI = 'mysql://bsip:pass@sip#123@dbserver:3306/packer?charset=utf8'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-                             'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:jason@localhost:3306/packer?charset=utf8'
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    #                          'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    broker_url = 'sqla+mysql://root:jason@localhost:3306/packer'
 
 
 class TestingConfig(Config):
