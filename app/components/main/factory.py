@@ -5,9 +5,13 @@ import threading
 import time
 import traceback
 
+import celery
+
 from app.models import db, Task, Step
 import worker
 from app.logger import logger
+
+from manage import app
 
 process_tasks = {}
 
@@ -25,32 +29,46 @@ def check_task(app):
             time.sleep(5)
 
 
-def process_task(task, app):
+@celery.task
+def test():
+    with app.app_context():
+        logger.info("this is celery test")
+        logger.info(db.session.query(Task).filter(Task.id == '30').one().serialize())
+
+
+@celery.task
+def process_task(taskId):
     with app.app_context():
         try:
-            task = db.session.query(Task).filter(Task.id == task.id).one()
+            task = db.session.query(Task).filter(Task.id == taskId).one()
             task.status = 'deploying'
             db.session.commit()
-            steps = Step.query.filter(Step.taskId == task.id).all()
+            steps = Step.query.filter(Step.taskId == taskId).all()
 
             returncode = 0
             for step in steps:
                 returncode = worker.process(step.content, step.id)
-                if returncode != 0:
-                    step.status = 'failed'
-                    break
-                else:
-                    step.status = 'success'
+
+                logger.info("returncode for step %s is %s" % (step.id, returncode))
+
                 step.log = worker.logs.get(step.id, '')
+                logger.info(worker.logs)
                 if worker.logs.has_key(step.id):
                     worker.logs.pop(step.id)
+                if returncode != 0:
+                    step.status = 'failed'
+                else:
+                    step.status = 'success'
                 db.session.commit()
+
+                if step.status == 'failed':
+                    break
             if returncode != 0:
                 task.status = 'failed'
             else:
                 task.status = 'success'
             db.session.commit()
-            del process_tasks[task.id]
+            # del process_tasks[task.id]
         except Exception, e:
             logger.error('error while process task %s' % task.id)
             logger.error(traceback.format_exc())
